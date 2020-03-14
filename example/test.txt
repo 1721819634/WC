@@ -1,0 +1,78 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+template <typename T>
+struct binaryTreeNode
+{
+	T element;
+	binaryTreeNode<T> *leftChild, *rightChild;
+
+	binaryTreeNode() {
+		leftChild = rightChild = NULL;
+	}
+
+	binaryTreeNode(const T &theElement) : element(theElement)
+	{
+		leftChild = rightChild = NULL;
+	}
+
+	binaryTreeNode(const T &theElement, binaryTreeNode *theLeftChild, binaryTreeNode *theRightChild) : element(theElement)
+	{
+		leftChild = theLeftChild;
+		rightChild = theRightChild;
+	}
+};
+
+template <typename T>
+void printvalue(binaryTreeNode<T> *t)
+{
+	cout << t->element << ' ';
+}
+
+template <typename T>
+void PrintNodeByLevel(binaryTreeNode<T>* root) {
+	queue<binaryTreeNode<T>*> Q;
+	queue<string> C;
+	Q.push(root);
+	Q.push(0);
+	do {
+		binaryTreeNode<T>* node = Q.front();
+		Q.pop();
+		if (node) {
+			cout << node->element << " ";
+			if (node->leftChild) {
+				Q.push(node->leftChild);
+				C.push("/");
+			}
+			if (node->rightChild) {
+				Q.push(node->rightChild);
+				C.push("\\");
+			}
+		}
+		else if (!Q.empty()) {
+			cout << endl;
+			while (C.size() != 0) {
+				cout << C.front() << " ";
+				C.pop();
+			}
+			Q.push(0);
+			cout << endl;
+		}
+	} while (!Q.empty());
+}
+
+int main()
+{
+	binaryTreeNode<int> *first, *second, *third, *four, *five, *six, *seven;
+	seven = new binaryTreeNode<int>(7);
+	six = new binaryTreeNode<int>(6);
+	five = new binaryTreeNode<int>(25);
+	four = new binaryTreeNode<int>(9);
+	third = new binaryTreeNode<int>(23, six, seven);
+	second = new binaryTreeNode<int>(12, four, five);
+	first = new binaryTreeNode<int>(15, second, third);
+	PrintNodeByLevel(first);
+	getchar();
+	return 0;
+}
